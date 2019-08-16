@@ -62,10 +62,13 @@ public class Hacker : MonoBehaviour
         else if (input == "suck it")
         {
             Terminal.WriteLine("YOU suck it!");
+            Terminal.WriteLine("please make a valid selection");
+
         }
         else
         {
             Terminal.WriteLine("please make a valid selection");
+            
         }
     }
 
@@ -132,6 +135,7 @@ public class Hacker : MonoBehaviour
 (___________//
 "
                 );
+                Terminal.WriteLine(menuHint);
                 break;
             case 2:
                 Terminal.WriteLine("Congrats, you beat level 2!");
@@ -144,6 +148,7 @@ public class Hacker : MonoBehaviour
 (___________//    (____________//
 "
                 );
+                Terminal.WriteLine(menuHint);
                 break;
             case 3:
                 Terminal.WriteLine("Congrats, you beat level 3!");
@@ -156,6 +161,7 @@ public class Hacker : MonoBehaviour
   (___________//       
 "
                 );
+                Terminal.WriteLine(menuHint);
                 break;
         }
     }
