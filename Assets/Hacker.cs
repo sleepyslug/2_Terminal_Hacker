@@ -7,8 +7,11 @@ public class Hacker : MonoBehaviour
     // Game Configuration Data
     string[] level1Passwords = {"cat", "dog", "bird", "yaboy" };
     string[] level2Passwords = { "harder", "faster", "stronger", "dumber" };
+    string[] level3Passwords = { "something", "because", "strawberry", "yesterday" };
 
     // Game State
+
+    const string menuHint = "You may enter 'menu' anytime to exit.";
     int level;
     string password;
     enum Screen {MainMenu, Password, Win };
@@ -50,11 +53,11 @@ public class Hacker : MonoBehaviour
 
     void RunMainMenu(string input)  
     {
-        bool isValidLevelNumber = (input == "1" || input == "2");
+        bool isValidLevelNumber = (input == "1" || input == "2" || input == "3");
         if (isValidLevelNumber)
         {
             level = int.Parse(input);
-            StartGame();
+            AskForPassword();
         }
         else if (input == "suck it")
         {
@@ -66,11 +69,19 @@ public class Hacker : MonoBehaviour
         }
     }
 
-    void StartGame()
+    void AskForPassword()
     {
         currentScreen = Screen.Password;
         Terminal.ClearScreen();
-        switch(level)
+        SetRandomPassword();
+        Terminal.WriteLine(menuHint);
+        Terminal.WriteLine("Enter your password, hint: " + password.Anagram());
+
+    }
+
+    void SetRandomPassword()
+    {
+        switch (level)
         {
             case 1:
                 password = level1Passwords[Random.Range(0, level1Passwords.Length)];
@@ -78,24 +89,74 @@ public class Hacker : MonoBehaviour
             case 2:
                 password = level2Passwords[Random.Range(0, level2Passwords.Length)];
                 break;
+            case 3:
+                password = level3Passwords[Random.Range(0, level3Passwords.Length)];
+                break;
             default:
                 Debug.LogError("Invalid Entry");
                 break;
         }
-        Terminal.WriteLine("Please enter your password: ");
-                
     }
 
     void CheckPassword(string input)
     {
         if (input == password)
         {
-            Terminal.WriteLine("Congrats, you win!");
+            DisplayWinScreen();
         }
         else
         {
-            Terminal.WriteLine("Sorry, guess again");
-            Terminal.WriteLine("Please enter your password: ");
+            AskForPassword();
+        }
+    }
+
+    void DisplayWinScreen()
+    {
+        currentScreen = Screen.Win;
+        Terminal.ClearScreen();
+        ShowLevelReward();
+    }
+
+    void ShowLevelReward()
+    {
+        switch (level)
+        {
+            case 1:
+                Terminal.WriteLine("Congrats, you beat level 1!");
+                Terminal.WriteLine(@"
+     ____________
+    /           //
+   /           //
+  /           //
+ /___________//
+(___________//
+"
+                );
+                break;
+            case 2:
+                Terminal.WriteLine("Congrats, you beat level 2!");
+                Terminal.WriteLine(@"
+     ____________      ____________
+    /           //    /            //
+   /           //    /            //
+  /           //    /            //
+ /___________//    /____________//
+(___________//    (____________//
+"
+                );
+                break;
+            case 3:
+                Terminal.WriteLine("Congrats, you beat level 3!");
+                Terminal.WriteLine(@"
+       ____________         
+      /   /\      // 
+     /   /  \    //  
+    /   /____\  //    
+   /___________//      
+  (___________//       
+"
+                );
+                break;
         }
     }
 }
